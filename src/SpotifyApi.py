@@ -1,6 +1,9 @@
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+import urllib.request
+import os
+
 
 def getPlaylistInformation(playlistId, userName):
     print("getting playlist information")
@@ -38,6 +41,7 @@ def getPlaylistInformation(playlistId, userName):
             "albumImageHeight": albumImageHeight,
             "albumImageWidth": albumImageWidth,
             "albumName": albumName,
+            "photoKey": artistName + "-" + trackName,
         }
 
         trackArray.append(trackObject)
@@ -45,5 +49,13 @@ def getPlaylistInformation(playlistId, userName):
     return trackArray
 
 
-def getStoreAlbumArt(albumArtUrl, storagePath):
+def getStoreAlbumArt(albumArtUrl, storagePath, photoKey ):
     print("Storing Album Art")
+
+    try:
+        os.mkdir(storagePath)
+    except OSError:
+        print ("")
+
+    urllib.request.urlretrieve(albumArtUrl, storagePath + "/" + photoKey + ".jpg")
+    urllib.request.urlretrieve(albumArtUrl, storagePath + "/" + photoKey + ".png")
