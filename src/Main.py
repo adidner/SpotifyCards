@@ -21,8 +21,12 @@ def main():
     trackArray = getPlaylistInformation(playlistId, userName)
     print(trackArray)
 
-    getStoreAlbumArt(trackArray[0]['albumImageUrl'], "albumArt", trackArray[0]['photoKey'])
-    createBackgroundImage(totalHeight, totalWidth, backgoundImageName)
+    for i in range(0, len(trackArray)):
+        getStoreAlbumArt(trackArray[i]['albumImageUrl'], "albumArt", trackArray[i]['photoKey'])
+        createBackgroundImage(totalHeight, totalWidth, backgoundImageName)
+
+
+        generateStoreBarCodeBackground("./albumArt/" + trackArray[i]['photoKey'] + ".png", trackArray[i]["photoKey"] + ".png")
 
     #Get playlist song list
 

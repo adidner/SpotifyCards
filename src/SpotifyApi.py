@@ -49,7 +49,7 @@ def getPlaylistInformation(playlistId, userName):
     return trackArray
 
 
-def getStoreAlbumArt(albumArtUrl, storagePath, photoKey ):
+def getStoreAlbumArt(albumArtUrl, storagePath, photoKey):
     print("Storing Album Art")
 
     try:
