@@ -41,7 +41,7 @@ def getPlaylistInformation(playlistId, userName):
             "albumImageHeight": albumImageHeight,
             "albumImageWidth": albumImageWidth,
             "albumName": albumName,
-            "photoKey": artistName + "-" + trackName,
+            "photoKey": artistName + "-" + trackName + ".png",
         }
 
         trackArray.append(trackObject)
@@ -57,5 +57,5 @@ def getStoreAlbumArt(albumArtUrl, storagePath, photoKey):
     except OSError:
         print ("")
 
-    urllib.request.urlretrieve(albumArtUrl, storagePath + "/" + photoKey + ".jpg")
-    urllib.request.urlretrieve(albumArtUrl, storagePath + "/" + photoKey + ".png")
+    #urllib.request.urlretrieve(albumArtUrl, storagePath + "/" + photoKey + ".jpg")
+    urllib.request.urlretrieve(albumArtUrl, storagePath + "/" + photoKey)
