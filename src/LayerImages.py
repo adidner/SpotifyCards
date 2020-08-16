@@ -1,3 +1,5 @@
+from PIL import ImageFont
+from PIL import ImageDraw
 from PIL import Image
 import os
 
@@ -20,5 +22,16 @@ def layerImage(backgroundPath, foregroundPath, storagePath,photoKey, x, y):
     background.save(storagePath + "/" + photoKey)
 
 
-def layerText(currentImageToLayerOn, textToLayer):
+def layerTrackAndArtistText(fileInPath, trackName, artistName, fileOutPath, fontsize, xTotal, yTotal, yoffset):
     print("layering Text")
+
+    img = Image.open(fileInPath)
+    draw = ImageDraw.Draw(img)
+    fontTrack = ImageFont.truetype('arial', fontsize)
+    fontArtist = ImageFont.truetype('arial', fontsize - 10)
+    w_artist,h_artist = draw.textsize(artistName, fontArtist)
+    w_track,h_track = draw.textsize(trackName, fontTrack)
+    center_height = ((yTotal - (h_track + h_artist)) / 2) + yoffset
+    draw.text(((xTotal-w_track)/2, center_height - h_track), trackName, (255, 255, 255), font=fontTrack)
+    draw.text(((xTotal-w_artist)/2, center_height + h_artist), artistName, (168, 168, 168), font=fontArtist)
+    img.save(fileOutPath)
