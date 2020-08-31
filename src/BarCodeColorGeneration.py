@@ -32,6 +32,7 @@ def generateStoreBarCodeBackground(albumArtPath,storagePath, photoKey, x, y):
 
     img = Image.new('RGB', (x,y), (r, g, b))
     img.save(storagePath + "/" + photoKey, "PNG")
+    return (r,g,b)
 
 
 

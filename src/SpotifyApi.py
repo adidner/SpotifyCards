@@ -3,7 +3,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import urllib.request
 import os
-
+from filters import removeInvalidFilenameCharacters
 
 def getPlaylistInformation(playlistId, userName):
     print("getting playlist information")
@@ -41,7 +41,7 @@ def getPlaylistInformation(playlistId, userName):
             "albumImageHeight": albumImageHeight,
             "albumImageWidth": albumImageWidth,
             "albumName": albumName,
-            "photoKey": artistName + "-" + trackName + ".png",
+            "photoKey": removeInvalidFilenameCharacters(artistName) + "-" + removeInvalidFilenameCharacters(trackName) + ".png",
         }
 
         trackArray.append(trackObject)
