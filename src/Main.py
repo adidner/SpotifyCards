@@ -8,6 +8,7 @@ from BarCodeColorGeneration import altGenerateStoreBarCodeBackground
 from LayerImages import layerImage
 from LayerImages import layerTrackAndArtistText
 from LayerImages import createBackgroundImage
+from LayerImages import getImgSize
 
 from time import sleep
 
@@ -39,8 +40,10 @@ def main():
         barcodeColor = generateStoreBarCodeBackground("./albumArt/" + photoKey, "barcodeArt",  photoKey, barcodeWidth, barcodeHeight)
         #altGenerateStoreBarCodeBackground("./albumArt/" + photoKey + ".png", currentTrack["photoKey"] + ".png")
 
+        width,height = getImgSize("./albumArt/" + photoKey)
+
         layerImage(backgoundImageName, "./albumArt/" + photoKey, "merging",photoKey, 91,85)
-        layerImage("./merging/" + photoKey , "./barcodeArt/" + photoKey ,"merging",photoKey, 91,725)
+        layerImage("./merging/" + photoKey , "./barcodeArt/" + photoKey ,"merging",photoKey, 91, 85 + height)
         red = barcodeColor[0]
         green = barcodeColor[1]
         blue = barcodeColor[2]
@@ -53,7 +56,7 @@ def main():
                                 "./merging/" + photoKey, 55,
                                 totalWidth, totalHeight - (725 + barcodeHeight), 725 + barcodeHeight)
 
-        
+
 
 
 

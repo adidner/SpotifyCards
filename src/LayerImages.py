@@ -35,3 +35,10 @@ def layerTrackAndArtistText(fileInPath, trackName, artistName, fileOutPath, font
     draw.text(((xTotal-w_track)/2, center_height - h_track), trackName, (255, 255, 255), font=fontTrack)
     draw.text(((xTotal-w_artist)/2, center_height + h_artist), artistName, (168, 168, 168), font=fontArtist)
     img.save(fileOutPath)
+
+
+def getImgSize(path):
+    image = Image.open(path)
+    width, height = image.size
+    print(width,height)
+    return (width,height)
