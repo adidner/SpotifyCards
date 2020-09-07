@@ -53,10 +53,7 @@ def main():
                                 "./merging/" + photoKey, 55,
                                 totalWidth, totalHeight - (725 + barcodeHeight), 725 + barcodeHeight)
 
-        #to get past rate limiting
-        #if i % 30 == 0:
-        #    print("go into my if blocker")
-        #    sleep(30)
+        
 
 
 

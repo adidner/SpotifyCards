@@ -4,6 +4,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import urllib.request
 import os
 from filters import removeInvalidFilenameCharacters
+from filters import removeTrackExcess
 
 def getPlaylistInformation(playlistId, userName):
     print("getting playlist information")
@@ -36,7 +37,7 @@ def getPlaylistInformation(playlistId, userName):
 
         trackObject = {
             "artistName": artistName,
-            "trackName": trackName,
+            "trackName": removeTrackExcess(trackName),
             "albumImageUrl": albumImageUrl,
             "albumImageHeight": albumImageHeight,
             "albumImageWidth": albumImageWidth,
