@@ -16,8 +16,8 @@ from time import sleep
 def main():
     print("starting script")
 
-    #playlistId = "73yt8788Kl512Onxir8R6T?si=XWAVtz4ASd6qf7PVsoMpVA"
-    playlistId = "6jIUdymXQAPTJDwhtOyvTT?si=UBdjaHAjQQGmSl09_oY4FA"
+    playlistId = "73yt8788Kl512Onxir8R6T?si=ybrwwL5sSB66461_2VbKBQ"
+    #playlistId = "6jIUdymXQAPTJDwhtOyvTT?si=UBdjaHAjQQGmSl09_oY4FA"
     userName = "ace50mon"
     backgoundImageName = "backgroundImage.png"
     totalHeight = 1233
