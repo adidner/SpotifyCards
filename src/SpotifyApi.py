@@ -3,15 +3,16 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import urllib.request
 import os
-from filters import removeInvalidFilenameCharacters
-from filters import removeTrackExcess
+from Filters import removeInvalidFilenameCharacters, removeTrackExcess
+from Constants import PLAYLIST_ID, USER_NAME
+from Util import makeFolderBasedOnPath
 
-def getPlaylistInformation(playlistId, userName):
+def getPlaylistInformation():
     print("getting playlist information")
     sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials())
 
     #limit 100 for the time being
-    playlist = sp.user_playlist(userName, playlistId, fields='tracks')
+    playlist = sp.user_playlist(USER_NAME, PLAYLIST_ID, fields='tracks')
 
     #filtering the playlist object into just that data we want
 
@@ -50,13 +51,7 @@ def getPlaylistInformation(playlistId, userName):
     return trackArray
 
 
-def getStoreAlbumArt(albumArtUrl, storagePath, photoKey):
+def getStoreAlbumArt(albumArtUrl, storagePath):
     print("Storing Album Art")
-
-    try:
-        os.mkdir(storagePath)
-    except OSError:
-        print ("")
-
-    #urllib.request.urlretrieve(albumArtUrl, storagePath + "/" + photoKey + ".jpg")
-    urllib.request.urlretrieve(albumArtUrl, storagePath + "/" + photoKey)
+    makeFolderBasedOnPath(storagePath)
+    urllib.request.urlretrieve(albumArtUrl, storagePath)

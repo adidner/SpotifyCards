@@ -1,66 +1,41 @@
-
-
-from SpotifyApi import getPlaylistInformation
-from SpotifyApi import getStoreAlbumArt
+from SpotifyApi import getPlaylistInformation, getStoreAlbumArt
 from BarCodeColorGeneration import generateStoreBarCodeBackground
-from BarCodeColorGeneration import altGenerateStoreBarCodeBackground
-
-from LayerImages import layerImage
-from LayerImages import layerTrackAndArtistText
-from LayerImages import createBackgroundImage
-from LayerImages import getImgSize
-
+from LayerImages import layerImage, layerTrackAndArtistText, createBackgroundImage, getImgSize, layerBarcodeImage
 from time import sleep
-
+from Constants import *
 
 def main():
     print("starting script")
 
-    playlistId = "73yt8788Kl512Onxir8R6T?si=ybrwwL5sSB66461_2VbKBQ"
-    #playlistId = "6jIUdymXQAPTJDwhtOyvTT?si=UBdjaHAjQQGmSl09_oY4FA"
-    userName = "ace50mon"
-    backgoundImageName = "backgroundImage.png"
-    totalHeight = 1233
-    totalWidth = 822
-    barcodeHeight = 160
-    barcodeWidth = 640
-    barcodeColor = ""
-
     # keys, artistName, trackName, albumImageUrl, albumImageHeight, albumImageWidth, albumName
-    trackArray = getPlaylistInformation(playlistId, userName)
-    print(trackArray)
+    spotify_object_array = getPlaylistInformation()
+    print(spotify_object_array)
 
-    for i in range(0, len(trackArray)):
-        currentTrack = trackArray[i]
+    for i in range(0, len(spotify_object_array)):
+        currentTrack = spotify_object_array[i]
         photoKey = currentTrack['photoKey']
-        getStoreAlbumArt(currentTrack['albumImageUrl'], "albumArt", photoKey)
-        createBackgroundImage(totalHeight, totalWidth, backgoundImageName)
 
+        albumArtName = "./albumArt/" + photoKey
+        mergingName = "./merging/" + photoKey
 
-        barcodeColor = generateStoreBarCodeBackground("./albumArt/" + photoKey, "barcodeArt",  photoKey, barcodeWidth, barcodeHeight)
-        #altGenerateStoreBarCodeBackground("./albumArt/" + photoKey + ".png", currentTrack["photoKey"] + ".png")
+        getStoreAlbumArt(currentTrack['albumImageUrl'], albumArtName)
+        createBackgroundImage()
 
-        width,height = getImgSize("./albumArt/" + photoKey)
+        red, green, blue = generateStoreBarCodeBackground(albumArtName, "barcodeArt",  photoKey)
 
-        layerImage(backgoundImageName, "./albumArt/" + photoKey, "merging",photoKey, 91,85)
-        layerImage("./merging/" + photoKey , "./barcodeArt/" + photoKey ,"merging",photoKey, 91, 85 + height)
-        red = barcodeColor[0]
-        green = barcodeColor[1]
-        blue = barcodeColor[2]
-        if (red*0.299 + green*0.587 + blue*0.114) > 186:
-            layerImage("./merging/" + photoKey, "./assets/black_barcode.png","merging",photoKey, 91, 725)
-        else:
-            layerImage("./merging/" + photoKey, "./assets/white_barcode.png","merging",photoKey, 91, 725)
+        album_width,album_height = getImgSize(albumArtName)
 
-        layerTrackAndArtistText("./merging/" + photoKey, currentTrack['trackName'], currentTrack['artistName'],
-                                "./merging/" + photoKey, 55,
-                                totalWidth, totalHeight - (725 + barcodeHeight), 725 + barcodeHeight)
+        TOP_PADDING_AND_IMAGE = TOP_PADDING + album_height
 
+        layerImage(BACKGROUND_IMAGE_NAME, albumArtName, mergingName, LEFT_PADDING,TOP_PADDING)
+        layerImage(mergingName, "./barcodeArt/" + photoKey, mergingName, LEFT_PADDING, TOP_PADDING + album_height)
 
+        layerBarcodeImage(mergingName, LEFT_PADDING, TOP_PADDING_AND_IMAGE, red, green, blue)
 
-
+        layerTrackAndArtistText(mergingName, currentTrack['trackName'], currentTrack['artistName'],
+                                TOTAL_WIDTH, TOTAL_HEIGHT - (TOP_PADDING_AND_IMAGE + BARCODE_HEIGHT),
+                                TOP_PADDING_AND_IMAGE + BARCODE_HEIGHT)
 
     print("ending script")
-
 
 main()

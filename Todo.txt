@@ -1,6 +1,21 @@
 TODO:
 
 
+- refactor code and
+  - constants
+  - snake styles names everything
+  - variable ordering on function
+  - clean up imports
+  - logical function re allocation
+- generate photos and
+- order them
+
+
+
+
+
+FINISHED:
+
 
 - dealing with titles or artists that are to long and need to be transfered into 2 lines
   - can grab size of text and check against whatever I think a good width is and then make it into 2 different lines from there
@@ -9,12 +24,6 @@ TODO:
   - if it doesn't split the other way?
 
   - The math changes a bit with 3, take that into account
-
-
-
-
-FINISHED:
-
 
 - tiny bit of space between some album art and some spotify bars
 

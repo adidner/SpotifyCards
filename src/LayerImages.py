@@ -1,50 +1,43 @@
-from PIL import ImageFont
-from PIL import ImageDraw
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 import os
 import itertools
+from Util import makeFolderBasedOnPath
 
-def createBackgroundImage(height, width, backgoundImageName):
-    img = Image.new('RGB', (width,height), (0, 0, 0))
-    img.save(backgoundImageName, "PNG")
+from Constants import *
 
-def layerImage(backgroundPath, foregroundPath, storagePath,photoKey, x, y):
+def createBackgroundImage():
+    img = Image.new('RGB', (TOTAL_WIDTH,TOTAL_HEIGHT), BLACK_TUPLE)
+    img.save(BACKGROUND_IMAGE_NAME, "PNG")
+
+def layerImage(backgroundPath, foregroundPath, storagePath, x, y):
     print("layering Image")
 
-    try:
-        os.mkdir(storagePath)
-    except OSError:
-        print ("")
+    makeFolderBasedOnPath(storagePath)
 
     background = Image.open(backgroundPath)
     foreground = Image.open(foregroundPath)
 
     background.paste(foreground, (x, y), foreground.convert('RGBA'))
-    background.save(storagePath + "/" + photoKey)
+    background.save(storagePath)
 
 
-def layerTrackAndArtistText(fileInPath, trackName, artistName, fileOutPath, fontsize, xTotal, yTotal, yoffset):
+def layerTrackAndArtistText(filePath, trackName, artistName, xTotal, yTotal, yoffset):
     print("layering Text")
 
     artist_divisions = 0
     track_divisions = 0
-    width_limit = 640
-    img = Image.open(fileInPath)
+    img = Image.open(filePath)
     draw = ImageDraw.Draw(img)
-    trackColor = (255, 255, 255)
-    artistColor = (168, 168, 168)
-    fontTrack = ImageFont.truetype('arial', fontsize)
-    fontArtist = ImageFont.truetype('arial', fontsize - 10)
 
     artistNameArray = [artistName]
     trackNameArray = [trackName]
 
     artist_size_array = []
-    w_artist,h_artist = draw.textsize(artistName, fontArtist)
+    w_artist,h_artist = draw.textsize(artistName, ARTIST_FONT)
     artist_size_array.append((w_artist,h_artist))
     track_size_array = []
 
-    w_track,h_track = draw.textsize(trackName, fontTrack)
+    w_track,h_track = draw.textsize(trackName, TRACK_FONT)
     track_size_array.append((w_track,h_track))
 
     smartBreak = False
@@ -58,7 +51,7 @@ def layerTrackAndArtistText(fileInPath, trackName, artistName, fileOutPath, font
                 if current in artistName:
                     artistNameArray = artistName.split(current)
                     artistNameArray[1] = current + artistNameArray[1]
-                    if checkStillToWide(artistNameArray, width_limit, fontArtist, draw) == False:
+                    if checkStillToWide(artistNameArray, WIDTH_LIMIT, ARTIST_FONT, draw) == False:
                         smartBreak = True
                         break
         if smartBreak:
@@ -69,7 +62,7 @@ def layerTrackAndArtistText(fileInPath, trackName, artistName, fileOutPath, font
             divisionalSpaces.append(getNearestSpace(artistName, current))
         print(divisionalSpaces)
         artistNameArray = getArrayOfWordsBasedOnArrayDivionalIndexs(divisionalSpaces, artistName)
-        if checkStillToWide(artistNameArray, width_limit, fontArtist, draw) == False:
+        if checkStillToWide(artistNameArray, WIDTH_LIMIT, ARTIST_FONT, draw) == False:
             break
         artist_divisions += 1
 
@@ -86,7 +79,7 @@ def layerTrackAndArtistText(fileInPath, trackName, artistName, fileOutPath, font
                     trackNameArray = trackName.split(current)
                     trackNameArray[1] = current + trackNameArray[1]
                     print(trackNameArray)
-                    if checkStillToWide(trackNameArray, width_limit, fontTrack, draw) == False:
+                    if checkStillToWide(trackNameArray, WIDTH_LIMIT, TRACK_FONT, draw) == False:
                         print("in if")
                         smartBreak = True
                         break
@@ -97,28 +90,21 @@ def layerTrackAndArtistText(fileInPath, trackName, artistName, fileOutPath, font
         for current in startIndexArray:
             divisionalSpaces.append(getNearestSpace(trackName, current))
         trackNameArray = getArrayOfWordsBasedOnArrayDivionalIndexs(divisionalSpaces, trackName)
-        if checkStillToWide(trackNameArray, width_limit, fontTrack, draw) == False:
+        if checkStillToWide(trackNameArray, WIDTH_LIMIT, TRACK_FONT, draw) == False:
             break
         track_divisions += 1
 
-    #now again but with arrays and division
-    #center_height = ((yTotal - (h_track + h_artist)) / 2) + yoffset
-    #draw.text(((xTotal-w_track)/2, center_height - h_track), trackName, trackColor, font=fontTrack)
-    #draw.text(((xTotal-w_artist)/2, center_height + h_artist), artistName, artistColor, font=fontArtist)
-
-
-
     placementOfWords = getStartIndexsBasedOnDivisions(len(trackNameArray) + len(artistNameArray), yTotal)
     placementOfWordsCounter = 0
-    track_size_array = convertTextArrayToSizeArray(trackNameArray, fontTrack, draw)
+    track_size_array = convertTextArrayToSizeArrayTracks(trackNameArray, TRACK_FONT, draw, track_divisions == 0)
 
     for (current,(w_track,h_track)) in zip(trackNameArray,track_size_array):
-        draw.text(((xTotal-w_track)/2, placementOfWords[placementOfWordsCounter] + yoffset - h_track), current, trackColor, font=fontTrack)
+        draw.text(((xTotal-w_track)/2, placementOfWords[placementOfWordsCounter] + yoffset - h_track), current, TRACK_COLOR, font=TRACK_FONT)
         placementOfWordsCounter += 1
 
-    artist_size_array = convertTextArrayToSizeArray(artistNameArray, fontArtist, draw)
+    artist_size_array = convertTextArrayToSizeArrayArtists(artistNameArray, ARTIST_FONT, draw, artist_divisions == 0)
     for (current,(w_artist,h_artist)) in zip(artistNameArray,artist_size_array):
-        draw.text(((xTotal-w_artist)/2, placementOfWords[placementOfWordsCounter] + yoffset - h_artist), current, artistColor, font=fontArtist)
+        draw.text(((xTotal-w_artist)/2, placementOfWords[placementOfWordsCounter] + yoffset - h_artist), current, ARTIST_COLOR, font=ARTIST_FONT)
         placementOfWordsCounter += 1
 
     print(trackNameArray)
@@ -127,7 +113,14 @@ def layerTrackAndArtistText(fileInPath, trackName, artistName, fileOutPath, font
     print(artist_size_array)
     print(placementOfWords)
 
-    img.save(fileOutPath)
+    img.save(filePath)
+
+
+def layerBarcodeImage(mergingName, x, y, red, green, blue):
+    if (red*0.299 + green*0.587 + blue*0.114) > 186:
+        layerImage(mergingName, "./assets/black_barcode.png", mergingName, x, y)
+    else:
+        layerImage(mergingName, "./assets/white_barcode.png", mergingName, x, y)
 
 def getArrayOfWordsBasedOnArrayDivionalIndexs(divisionalIndexs, word):
     if len(divisionalIndexs) == 0 or (len(divisionalIndexs) == 1 and divisionalIndexs[0] == -1):
@@ -179,17 +172,36 @@ def getStartIndexsBasedOnDivisions(numberDivisions, wordLen):
 
 
 
-def convertTextArrayToSizeArray(text_array,font,draw):
+def convertTextArrayToSizeArrayTracks(text_array,font,draw, zeroDivisions):
+    size_array = []
+    for current in text_array:
+        w,h = draw.textsize(current, font)
+        if zeroDivisions:
+            h -= TEXT_PADDING
+        size_array.append((w,h))
+    return size_array
+
+def convertTextArrayToSizeArrayArtists(text_array,font,draw, zeroDivisions):
+    size_array = []
+    for current in text_array:
+        w,h = draw.textsize(current, font)
+        if zeroDivisions:
+            h += TEXT_PADDING
+        size_array.append((w,h))
+    return size_array
+
+def convertTextArrayToSizeArray(text_array,font, draw):
     size_array = []
     for current in text_array:
         w,h = draw.textsize(current, font)
         size_array.append((w,h))
     return size_array
 
-def checkStillToWide(text_array, width_limit, font, draw):
+
+def checkStillToWide(text_array, WIDTH_LIMIT, font, draw):
     size_array = convertTextArrayToSizeArray(text_array,font, draw)
     for current in size_array:
-        if current[0] > width_limit:
+        if current[0] > WIDTH_LIMIT:
             return True
     return False
 

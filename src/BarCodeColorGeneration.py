@@ -2,9 +2,10 @@
 from PIL import Image
 from collections import defaultdict
 import os
+from Constants import BARCODE_WIDTH, BARCODE_HEIGHT
 
 
-def generateStoreBarCodeBackground(albumArtPath,storagePath, photoKey, x, y):
+def generateStoreBarCodeBackground(albumArtPath,storagePath, photoKey):
     print("Generate store barcode background")
 
     try:
@@ -12,7 +13,7 @@ def generateStoreBarCodeBackground(albumArtPath,storagePath, photoKey, x, y):
     except OSError:
         print ("")
 
-    im = Image.open(albumArtPath)
+    im = Image.open(open(albumArtPath, 'rb'))
     by_color = defaultdict(int)
     for pixel in im.getdata():
         by_color[pixel] += 1
@@ -30,26 +31,6 @@ def generateStoreBarCodeBackground(albumArtPath,storagePath, photoKey, x, y):
     g = int(g/size)
     b = int(b/size)
 
-    img = Image.new('RGB', (x,y), (r, g, b))
+    img = Image.new('RGB', (BARCODE_WIDTH, BARCODE_HEIGHT), (r, g, b))
     img.save(storagePath + "/" + photoKey, "PNG")
     return (r,g,b)
-
-
-
-def altGenerateStoreBarCodeBackground(albumArtPath,storagePath):
-    im = Image.open(albumArtPath)
-    by_color = defaultdict(int)
-    r = 0
-    g = 0
-    b = 0
-    for pixel in im.getdata():
-         r += pixel[0]
-         g += pixel[1]
-         b += pixel[2]
-
-    size = len(im.getdata())
-    r = int(r/size)
-    g = int(g/size)
-    b = int(b/size)
-    img = Image.new('RGB', (100,100), (r, g, b))
-    img.save(storagePath, "PNG")
