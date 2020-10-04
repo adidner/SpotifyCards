@@ -16,8 +16,11 @@ TRACK_FONT = ImageFont.truetype('arial', TRACK_FONT_SIZE)
 
 TEXT_PADDING = 15
 
-PLAYLIST_ID = "73yt8788Kl512Onxir8R6T?si=ybrwwL5sSB66461_2VbKBQ"
-#PLAYLIST_ID = "6jIUdymXQAPTJDwhtOyvTT?si=UBdjaHAjQQGmSl09_oY4FA"
+#testing one
+#PLAYLIST_ID = "73yt8788Kl512Onxir8R6T?si=g68nEa3KRpGet8ef3q4Phw"
+
+#actual one I care about
+PLAYLIST_ID = "6jIUdymXQAPTJDwhtOyvTT?si=UBdjaHAjQQGmSl09_oY4FA"
 
 USER_NAME = "ace50mon"
 

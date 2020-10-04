@@ -93,18 +93,19 @@ def layerTrackAndArtistText(filePath, trackName, artistName, xTotal, yTotal, yof
         if checkStillToWide(trackNameArray, WIDTH_LIMIT, TRACK_FONT, draw) == False:
             break
         track_divisions += 1
+    noDivisions = (track_divisions == 0 and artist_divisions == 0)
+    track_size_array = convertTextArrayToSizeArrayTracks(trackNameArray, TRACK_FONT, draw, noDivisions)
+    artist_size_array = convertTextArrayToSizeArrayArtists(artistNameArray, ARTIST_FONT, draw, noDivisions)
 
     placementOfWords = getStartIndexsBasedOnDivisions(len(trackNameArray) + len(artistNameArray), yTotal)
     placementOfWordsCounter = 0
-    track_size_array = convertTextArrayToSizeArrayTracks(trackNameArray, TRACK_FONT, draw, track_divisions == 0)
 
     for (current,(w_track,h_track)) in zip(trackNameArray,track_size_array):
-        draw.text(((xTotal-w_track)/2, placementOfWords[placementOfWordsCounter] + yoffset - h_track), current, TRACK_COLOR, font=TRACK_FONT)
+        draw.text(((xTotal-w_track)/2, placementOfWords[placementOfWordsCounter] + yoffset - (h_track/2)), current, TRACK_COLOR, font=TRACK_FONT)
         placementOfWordsCounter += 1
 
-    artist_size_array = convertTextArrayToSizeArrayArtists(artistNameArray, ARTIST_FONT, draw, artist_divisions == 0)
     for (current,(w_artist,h_artist)) in zip(artistNameArray,artist_size_array):
-        draw.text(((xTotal-w_artist)/2, placementOfWords[placementOfWordsCounter] + yoffset - h_artist), current, ARTIST_COLOR, font=ARTIST_FONT)
+        draw.text(((xTotal-w_artist)/2, placementOfWords[placementOfWordsCounter] + yoffset - (h_artist/2)), current, ARTIST_COLOR, font=ARTIST_FONT)
         placementOfWordsCounter += 1
 
     print(trackNameArray)

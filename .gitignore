@@ -1,3 +1,4 @@
-./src/barcodeArt/*
-./src/merging/*
-./src/albumArt/*
+src/barcodeArt/*
+src/merging/*
+src/albumArt/*
+src/__pycache__/*
