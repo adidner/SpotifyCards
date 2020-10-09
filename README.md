@@ -19,5 +19,7 @@ I got mine here https://photos3.walmart.com/about/prints# and then delivered to 
 ### Installation:
 
 Python https://www.python.org/downloads/
+
 PIL python library `pip install PIL`
+
 spotify python spotify API wrapper `pip install spotipy`
