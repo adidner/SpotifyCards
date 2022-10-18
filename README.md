@@ -20,6 +20,20 @@ I got mine here https://photos3.walmart.com/about/prints# and then delivered to 
 
 Python https://www.python.org/downloads/
 
-PIL python library `pip install PIL`
+<!-- PIL python library `pip install PIL` -->
+Install the Pillow library -> `pip install Pillow`
 
 spotify python spotify API wrapper `pip install spotipy`
+
+You will also need to go to https://developer.spotify.com/dashboard/applications
+
+Where you will need to create a new app 
+
+And then set the environment variable for 
+`SPOTIPY_CLIENT_ID`
+`SPOTIPY_CLIENT_SECRET`
+
+
+### Output 
+
+Created photos will be output in the merging folder
