@@ -20,7 +20,8 @@ TEXT_PADDING = 15
 #PLAYLIST_ID = "73yt8788Kl512Onxir8R6T?si=g68nEa3KRpGet8ef3q4Phw"
 
 #actual one I care about
-PLAYLIST_ID = "6jIUdymXQAPTJDwhtOyvTT?si=UBdjaHAjQQGmSl09_oY4FA"
+# PLAYLIST_ID = "6jIUdymXQAPTJDwhtOyvTT?si=UBdjaHAjQQGmSl09_oY4FA"
+PLAYLIST_ID = "3Djo28pdzjTtOa2N1vmtXF?si=8a437810ea224199"
 
 USER_NAME = "ace50mon"
 
