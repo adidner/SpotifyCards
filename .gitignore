@@ -2,3 +2,4 @@ src/barcodeArt/*
 src/merging/*
 src/albumArt/*
 src/__pycache__/*
+src/.cache
